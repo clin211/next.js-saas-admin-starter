@@ -1,0 +1,51 @@
+{
+  "skill_name": "feature-blueprint",
+  "evals": [
+    {
+      "id": 1,
+      "name": "members-crud-module",
+      "prompt": "把 src/app/(dashboard)/users 的桩页面做成真正的「成员管理」功能模块。要求：成员列表（带搜索框 + 分页）、点「新增」弹窗表单新增成员、行内「编辑/删除」。数据走 /members 接口（list/create/update/delete）。请按项目既有规范完整实现：模块结构、数据层、组件、路由，以及配套页面。写完告诉我你新增/改了哪些文件。",
+      "expected_output": "一个自包含的 features/members 模块 + 路由页 + 三件套（loading/error/not-found）；Zod 单一事实源；apiClient 调用；qk 追加；RSC page + HydrateBoundary；列表状态进 URL；语义令牌；权限登记。",
+      "expectations": [
+        "新增了 features/members/ 目录，包含 schemas.ts、types.ts、api.ts、constants.ts、index.ts",
+        "存在 Zod schema（如 memberSchema），且 TS 类型由 z.infer 推导而非手写重复结构",
+        "api.ts 通过 apiClient（从 @/lib/api/client 导入）调用接口，不直接用 fetch",
+        "在 lib/api/query-keys.ts 的 qk 工厂里追加了 members 的 key 层级",
+        "路由 page.tsx 是 Server Component（文件顶部无 'use client'），使用 prefetchQuery + HydrateBoundary 注入首屏数据",
+        "该路由段配有 loading.tsx、error.tsx、not-found.tsx 三件套",
+        "列表的搜索/分页状态进入 URL（使用 searchParams 或 useSearchParams），而非仅靠 useState",
+        "组件中只使用语义令牌（如 bg-card/border/text-muted-foreground），无写死的 hex 颜色或 gray- 原始值",
+        "受控入口挂了权限（在 config/nav.ts 的 permission 字段，或使用 <Can> 组件）",
+        "新增代码包含中文注释（保持项目双语风格）"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "dashboard-metrics-streaming",
+      "prompt": "在仪表盘 src/app/(dashboard)/dashboard 加一组「今日概览」指标卡：今日 API 调用次数、Token 消耗、活跃成员数，再加一张「最近 7 天调用趋势」的图。数据从 /api/metrics 拉，趋势图数据从 /api/metrics/trend 拉（这个接口较慢）。我希望快的卡片先出来，慢的趋势图别拖住整页。按项目规范实现。",
+      "expected_output": "dashboard 页用 RSC 取数；快卡片与慢趋势图用 <Suspense> 分流，慢块带骨架先占位；指标卡是独立组件而非全堆 page 里；图表库按需 dynamic 导入；语义令牌；无双取。",
+      "expectations": [
+        "dashboard 的 page.tsx 以 Server Component 方式获取数据（await fetch 或 prefetchQuery），不把整页做成客户端组件",
+        "使用 <Suspense> 包裹加载较慢的趋势图，使其不阻塞快卡片的渲染（流式渲染）",
+        "指标卡被拆成独立组件（而非把所有取数 + JSX 堆在 page.tsx 一个文件里）",
+        "较重的图表相关逻辑使用 next/dynamic 按需加载（ssr:false 或动态导入），不进首屏 bundle",
+        "组件中只使用语义令牌，无写死的 hex 颜色或 gray- 原始值",
+        "首屏数据不存在「服务端取一次、客户端又取一次」的双取问题"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "public-pricing-static",
+      "prompt": "做一个公开的定价页 /pricing，不需要登录就能访问，列出三个套餐（免费/专业/企业）的功能对比与价格。这个页面内容更新不频繁，我希望它又快又能被缓存。请按项目规范实现这个页面及其配套。",
+      "expected_output": "/pricing 公开页，采用静态化（SSG/ISR）；意识到公开页需在 proxy.ts matcher 放行；导出 metadata；配 loading/error/not-found；语义令牌。",
+      "expectations": [
+        "新增了公开路由 app/pricing/page.tsx（页面内容不需登录即可访问）",
+        "采用了静态化或增量静态化策略（SSG 默认 / ISR revalidate / generateStaticParams 其一，或有明确静态化说明）",
+        "意识到公开页需要在 src/proxy.ts 的 matcher 中放行（实际修改了 matcher，或在注释/说明中明确指出该需求）",
+        "该路由段配有 loading.tsx、error.tsx、not-found.tsx 三件套",
+        "组件中只使用语义令牌，无写死的 hex 颜色或 gray- 原始值",
+        "页面导出了 metadata（至少包含 title）"
+      ]
+    }
+  ]
+}

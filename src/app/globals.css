@@ -1,26 +1,362 @@
+/* =============================================================================
+   Design Tokens — globals.css
+   -----------------------------------------------------------------------------
+   结构（自上而下）：
+     0. Tailwind 入口 + dark 变体（next-themes class 策略必备）
+     1. 语义令牌 —— 浅色 :root
+     2. 语义令牌 —— 暗色 .dark
+     3. 静态令牌 —— @theme（排版 / 阴影 / 缓动，写死值，生成工具类）
+     4. 运行时映射 —— @theme inline（颜色 / 字体 / 圆角 → 引用上面 :root 的 var）
+     5. 非 Tailwind 命名空间令牌 —— :root（duration / z-index / AppShell 布局）
+     6. Base 层 + 增强（selection / scrollbar / reduced-motion）
+
+   规则：组件/页面只能消费【语义令牌】（bg-card / text-muted-foreground …），
+        禁止写死 hex 或直接用原始灰阶。文本对比度满足 WCAG AA。
+   ========================================================================== */
+
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* next-themes 用 attribute="class"，v4 默认 dark: 是 prefers-color-scheme，
+   必须覆盖为 class 变体，否则任何 dark: 工具类都不生效。 */
+@custom-variant dark (&:is(.dark *));
+
+/* =============================================================================
+   1 & 2. 语义令牌（Semantic）—— 组件直接消费的「视觉事实源」
+   ========================================================================== */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+
+  /* —— 表面 / 文字 —— */
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+
+  /* —— 品牌 / 主操作（可被多租户运行时覆盖，见 §4.2） —— */
+  --primary: oklch(0.546 0.215 262);
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* —— 中性 —— */
+  --secondary: oklch(0.967 0.003 247);
+  --secondary-foreground: oklch(0.21 0.011 264);
+  --muted: oklch(0.967 0.003 247);
+  --muted-foreground: oklch(0.551 0.016 264);
+  --accent: oklch(0.967 0.003 247);
+  --accent-foreground: oklch(0.21 0.011 264);
+
+  /* —— 反馈色（含前景，供实色 badge 用） —— */
+  --destructive: oklch(0.577 0.245 27.3);
+  --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.627 0.17 149);
+  --success-foreground: oklch(0.985 0 0);
+  --warning: oklch(0.76 0.16 84);
+  --warning-foreground: oklch(0.21 0.011 264);
+  --info: oklch(0.65 0.15 240);
+  --info-foreground: oklch(0.985 0 0);
+
+  /* —— 描边 / 输入 / 聚焦环 —— */
+  --border: oklch(0.928 0.006 264);
+  --input: oklch(0.928 0.006 264);
+  --ring: oklch(0.546 0.215 262);
+
+  /* —— 数据可视化（色盲友好的主色族） —— */
+  --chart-1: oklch(0.546 0.215 262);
+  --chart-2: oklch(0.627 0.17 149);
+  --chart-3: oklch(0.76 0.16 84);
+  --chart-4: oklch(0.65 0.15 240);
+  --chart-5: oklch(0.64 0.2 17);
+
+  /* —— 侧边栏（Rail + Panel 共用，深浅可独立于主体） —— */
+  --sidebar: oklch(0.985 0.002 247);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.546 0.215 262);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.003 247);
+  --sidebar-accent-foreground: oklch(0.21 0.011 264);
+  --sidebar-border: oklch(0.928 0.006 264);
+  --sidebar-ring: oklch(0.546 0.215 262);
+
+  /* —— Rail（深色恒宽一级导航栏；浅/暗主题均保持深色品牌观感） —— */
+  --rail: oklch(0.245 0.028 268);
+  --rail-foreground: oklch(0.965 0.004 268);
+  --rail-muted: oklch(0.72 0.018 268);
+  --rail-accent: oklch(0.335 0.05 272);
+  --rail-accent-foreground: oklch(0.99 0 0);
+  --rail-border: oklch(1 0 0 / 0.06);
+
+  /* —— 品牌渐变（Logo 用） —— */
+  --brand-from: oklch(0.56 0.23 288);
+  --brand-to: oklch(0.66 0.2 308);
+
+  /* —— 圆角基准 —— */
+  --radius: 0.625rem;
 }
 
+.dark {
+  color-scheme: dark;
+
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* 暗色下品牌色提亮，保证对前景的对比度 */
+  --primary: oklch(0.623 0.188 262);
+  --primary-foreground: oklch(0.205 0 0);
+
+  --secondary: oklch(0.279 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.279 0 0);
+  --muted-foreground: oklch(0.707 0 0);
+  --accent: oklch(0.329 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+
+  --destructive: oklch(0.637 0.209 25);
+  --destructive-foreground: oklch(0.985 0 0);
+  --success: oklch(0.696 0.15 149);
+  --success-foreground: oklch(0.205 0 0);
+  --warning: oklch(0.795 0.15 84);
+  --warning-foreground: oklch(0.205 0 0);
+  --info: oklch(0.7 0.15 240);
+  --info-foreground: oklch(0.205 0 0);
+
+  --border: oklch(0.279 0 0);
+  --input: oklch(0.329 0 0);
+  --ring: oklch(0.623 0.188 262);
+
+  --chart-1: oklch(0.623 0.188 262);
+  --chart-2: oklch(0.696 0.15 149);
+  --chart-3: oklch(0.795 0.15 84);
+  --chart-4: oklch(0.7 0.15 240);
+  --chart-5: oklch(0.69 0.19 17);
+
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.623 0.188 262);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
+  --sidebar-accent: oklch(0.329 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.279 0 0);
+  --sidebar-ring: oklch(0.623 0.188 262);
+
+  /* 暗色下 Rail 略压暗，与近黑背景仍可区分 */
+  --rail: oklch(0.205 0.03 268);
+  --rail-foreground: oklch(0.96 0.004 268);
+  --rail-muted: oklch(0.68 0.018 268);
+  --rail-accent: oklch(0.305 0.05 272);
+  --rail-accent-foreground: oklch(0.99 0 0);
+  --rail-border: oklch(1 0 0 / 0.08);
+}
+
+/* =============================================================================
+   3. 静态令牌 —— @theme（值写死，生成工具类；不随主题变）
+   - 排版：--text-foo + --text-foo--line-height（v4 伴生变量）
+          不烤 font-weight，避免与 font-* 工具类打架；字重用 font-semibold 等单独加。
+   ========================================================================== */
+@theme {
+  /* —— 排版阶梯（流体 clamp 自适应，B 端信息密度型） —— */
+  --text-display: clamp(2.5rem, 2rem + 2vw, 3.75rem);
+  --text-display--line-height: 1.1;
+
+  --text-h1: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --text-h1--line-height: 1.2;
+
+  --text-h2: 1.5rem;
+  --text-h2--line-height: 1.3;
+
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.4;
+
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.4;
+
+  --text-body: 0.9375rem; /* 15px */
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.8125rem; /* 13px */
+  --text-small--line-height: 1.5;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.5;
+
+  --text-overline: 0.6875rem;
+  --text-overline--line-height: 1.4;
+  --text-overline--letter-spacing: 0.08em; /* 配合 uppercase 工具类使用 */
+
+  /* —— 阴影（克制，B 端不用默认大阴影） —— */
+  --shadow-xs: 0 1px 2px 0 oklch(0.21 0.006 285 / 0.04);
+  --shadow-sm: 0 1px 2px 0 oklch(0.21 0.006 285 / 0.05);
+  --shadow-md:
+    0 4px 12px -2px oklch(0.21 0.006 285 / 0.1), 0 2px 6px -2px oklch(0.21 0.006 285 / 0.06);
+  --shadow-lg:
+    0 12px 32px -4px oklch(0.21 0.006 285 / 0.14), 0 4px 10px -4px oklch(0.21 0.006 285 / 0.08);
+  --shadow-glow: 0 0 20px -2px oklch(0.546 0.215 262 / 0.35); /* 强调态，半透明品牌光晕 */
+
+  /* —— 缓动曲线（生成 ease-standard / ease-emphasized 工具类） —— */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* =============================================================================
+   4. 运行时映射 —— @theme inline
+   引用上面 :root/.dark 的 var()，所以 bg-background 等会随主题实时切换。
+   （inline 关键：工具类直接内联 var(--background)，不被静态拷贝盖掉。）
+   字体变量 --font-geist-* 由 next/font 在 layout.tsx 注入，缺省时走 fallback 栈。
+   ========================================================================== */
 @theme inline {
+  /* —— 颜色同名映射 —— */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-rail: var(--rail);
+  --color-rail-foreground: var(--rail-foreground);
+  --color-rail-muted: var(--rail-muted);
+  --color-rail-accent: var(--rail-accent);
+  --color-rail-accent-foreground: var(--rail-accent-foreground);
+  --color-rail-border: var(--rail-border);
+
+  /* —— 字体（CJK 走系统字体，不通过 next/font 加载，避免 Noto SC 体积爆炸） —— */
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", "Cascadia Code", monospace;
+
+  /* —— 圆角派生 —— */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* =============================================================================
+   5. 非 Tailwind 命名空间令牌 —— 普通 :root CSS 变量
+   duration / z-index / 布局都不是 v4 命名空间，不会自动生成工具类，
+   故用裸 var 引用：duration-(--duration-fast) / z-[var(--z-modal)] / w-(--shell-rail)。
+   ========================================================================== */
+:root {
+  /* —— 动效时长（用法 transition-[...] duration-(--duration-fast)） —— */
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+
+  /* —— Z-index 层级（集中定义，杜绝 9999 大战） —— */
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-drawer: 1200;
+  --z-modal: 1300;
+  --z-popover: 1400;
+  --z-toast: 1500;
+  --z-tooltip: 1600;
+  --z-command: 1700;
+
+  /* —— AppShell 布局：Rail 恒宽（图标+文字）；Panel 展开档，收起=0（完全收起） —— */
+  --shell-rail: 76px;
+  --shell-panel: 240px;
+  --shell-panel-collapsed: 0px;
+  /* Rail Logo / Panel 头 / Topbar 共用的首行高度（三列对齐） */
+  --shell-header: 4rem;
+}
+
+/* =============================================================================
+   6. Base 层 + 增强
+   ========================================================================== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100dvh;
+  }
+
+  /* 自定义滚动条（克制） */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* 选区色跟随品牌 */
+  ::selection {
+    background-color: color-mix(in oklch, var(--primary) 25%, transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 尊重系统「减少动态」—— Motion 自身也降级，此处为 CSS 安全网 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

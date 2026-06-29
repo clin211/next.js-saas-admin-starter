@@ -1,0 +1,10 @@
+# oxlint 默认读取本文件（与 ESLint 同名约定）。
+# 仅对应用代码做 lint：以下为依赖/构建产物/工具脚本，排除。
+node_modules/
+.next/
+out/
+coverage/
+# .claude / .agents 下的 skill 脚本为 vendored AI 工具，不纳入应用 lint。
+# （bun run lint = oxlint . 据此跳过；lint-staged 另由 .lintstagedrc 的 glob 限定到 src/ 与根配置，不会把它们传给 oxlint。）
+.claude/
+.agents/

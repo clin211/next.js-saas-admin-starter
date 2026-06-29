@@ -1,0 +1,39 @@
+# gc-Console 本地 / 单机一键编排。
+# 生产请用正经编排或 k8s，并经秘密管理系统注入 AUTH_SECRET。
+#
+# 用法：
+#   cd deploy
+#   AUTH_SECRET=$(openssl rand -base64 32) docker compose up -d --build
+
+services:
+  gc-console:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+      args:
+        # NEXT_PUBLIC_* 为构建期内联变量
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+        # 接真实后端时取消注释（并同步把后端域名加入 next.config.ts 的 CSP connect-src）
+        # NEXT_PUBLIC_API_BASE_URL: https://api.example.com
+    image: gc-console:latest
+    container_name: gc-console
+    ports:
+      - "3000:3000"
+    environment:
+      # 运行期必填：会话票据 HMAC 签名密钥（生产务必强随机）
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET is required (e.g. openssl rand -base64 32)}
+      NODE_ENV: production
+    restart: unless-stopped
+    healthcheck:
+      # node:22-alpine 无 curl/wget，用全局 fetch 探活（/ 会 302→/login，status<500 即健康）
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
