@@ -1,4 +1,4 @@
-# gc-Console
+# next.js-saas-admin-starter
 
 > B 端 SaaS 管理后台的**前端基建**（非一次性 demo）。建立「设计体系 + 工程骨架 + 业务能力底座」，使后续业务模块能按约定快速组装。基于 Next.js 16 App Router。
 
@@ -82,14 +82,14 @@ PORT=3000 HOSTNAME=0.0.0.0 bun run start   # 自定义端口 / 主机
 
 ```bash
 # 构建（上下文须为仓库根）
-docker build -f deploy/Dockerfile -t gc-console:latest \
+docker build -f deploy/Dockerfile -t next.js-saas-admin-starter:latest \
   --build-arg NEXT_PUBLIC_APP_URL=https://console.example.com .
   # 接真实后端再加：--build-arg NEXT_PUBLIC_API_BASE_URL=https://api.example.com
 
 # 运行（AUTH_SECRET 运行期必填）
 docker run -d -p 3000:3000 \
   -e AUTH_SECRET=$(openssl rand -base64 32) \
-  --name gc-console gc-console:latest
+  --name next.js-saas-admin-starter next.js-saas-admin-starter:latest
 ```
 
 或用 compose 一键（见 [`deploy/docker-compose.yml`](deploy/docker-compose.yml)）：

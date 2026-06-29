@@ -40,7 +40,7 @@ export function MobileNav({ open, onOpenChange }: MobileNavProps) {
                 backgroundImage: "linear-gradient(135deg, var(--brand-from), var(--brand-to))",
               }}
             >
-              GC
+              SA
             </span>
             <span className="text-body font-semibold tracking-tight">{siteConfig.name}</span>
           </SheetTitle>

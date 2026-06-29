@@ -7,6 +7,7 @@ import { siteConfig } from "@/config/site";
 import { env } from "@/lib/env";
 import { setSessionCookie } from "@/lib/auth/session";
 import { DEV_SESSION } from "@/lib/auth/session-codec";
+import { DEMO_CREDENTIALS } from "@/lib/auth/demo-credentials";
 
 import { LoginForm } from "./login-form";
 
@@ -79,7 +80,7 @@ export default async function LoginPage({
                 backgroundImage: "linear-gradient(135deg, var(--brand-from), var(--brand-to))",
               }}
             >
-              GC
+              SA
             </span>
             <span className="text-h4 font-semibold tracking-tight">{siteConfig.name}</span>
           </div>
@@ -174,7 +175,7 @@ export default async function LoginPage({
                 backgroundImage: "linear-gradient(135deg, var(--brand-from), var(--brand-to))",
               }}
             >
-              GC
+              SA
             </span>
             <span className="text-body font-semibold">{siteConfig.name}</span>
           </div>
@@ -189,11 +190,25 @@ export default async function LoginPage({
           </div>
 
           {env.NODE_ENV === "development" ? (
-            <form action={guestEnter.bind(null, target)} className="mt-3">
-              <Button type="submit" variant="outline" className="w-full">
-                游客进入（开发模式）
-              </Button>
-            </form>
+            <div className="mt-4 space-y-3">
+              {/* 演示凭证提示：演示阶段让访客一眼看到可用的固定测试账号 */}
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md border border-border bg-muted/40 px-3 py-2 text-small text-muted-foreground">
+                <span className="font-medium text-foreground">演示账号</span>
+                <span>
+                  用户名{" "}
+                  <code className="font-mono text-foreground">{DEMO_CREDENTIALS.username}</code>
+                </span>
+                <span>
+                  密码{" "}
+                  <code className="font-mono text-foreground">{DEMO_CREDENTIALS.password}</code>
+                </span>
+              </div>
+              <form action={guestEnter.bind(null, target)}>
+                <Button type="submit" variant="outline" className="w-full">
+                  游客进入（开发模式）
+                </Button>
+              </form>
+            </div>
           ) : null}
 
           <p className="mt-8 text-center text-small text-muted-foreground">

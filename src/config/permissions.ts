@@ -7,7 +7,7 @@ export type Permission = "user:read" | "user:write" | "role:read" | "role:write"
 /**
  * 角色常量：既是 RBAC 矩阵的维度，也供 Zod schema 复用（单一事实源）。
  * 全小写枚举；档位 owner > admin > member > viewer。
- * （曾误用 PascalCase 的 "Console"，与产品名 GC Console 及 JS 全局 console 撞名，已纠正为 admin。）
+ * （曾误用 PascalCase 的 "Console"，与产品名 next.js-saas-admin-starter 及 JS 全局 console 撞名，已纠正为 admin。）
  */
 export const ROLES = ["owner", "admin", "member", "viewer"] as const;
 export type Role = (typeof ROLES)[number];

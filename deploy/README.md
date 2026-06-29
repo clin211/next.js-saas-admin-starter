@@ -1,6 +1,6 @@
 # 部署（deploy/）
 
-gc-Console 的生产构建与 Docker 部署。镜像基于 Next.js **standalone** 输出，多阶段构建：`bun` 装依赖 + 编译 → `node:22-alpine` 运行 standalone server，最终镜像仅含最小运行产物、以非 root 用户运行。
+next.js-saas-admin-starter 的生产构建与 Docker 部署。镜像基于 Next.js **standalone** 输出，多阶段构建：`bun` 装依赖 + 编译 → `node:22-alpine` 运行 standalone server，最终镜像仅含最小运行产物、以非 root 用户运行。
 
 > 前置依赖：`next.config.ts` 已开启 `output: "standalone"`。
 
@@ -11,7 +11,7 @@ gc-Console 的生产构建与 Docker 部署。镜像基于 Next.js **standalone*
 构建上下文**必须是仓库根**（Dockerfile 在 `deploy/` 下）：
 
 ```bash
-docker build -f deploy/Dockerfile -t gc-console:latest \
+docker build -f deploy/Dockerfile -t next.js-saas-admin-starter:latest \
   --build-arg NEXT_PUBLIC_APP_URL=https://console.example.com .
 ```
 
@@ -32,7 +32,7 @@ docker build -f deploy/Dockerfile -t gc-console:latest \
 ```bash
 docker run -d -p 3000:3000 \
   -e AUTH_SECRET=$(openssl rand -base64 32) \
-  --name gc-console gc-console:latest
+  --name next.js-saas-admin-starter next.js-saas-admin-starter:latest
 ```
 
 ### 运行期环境变量
@@ -67,7 +67,7 @@ AUTH_SECRET=$(openssl rand -base64 32) docker compose up -d --build
 ```bash
 docker buildx create --use --name gc-builder   # 仅首次
 docker buildx build --platform linux/amd64,linux/arm64 \
-  -f deploy/Dockerfile -t gc-console:latest \
+  -f deploy/Dockerfile -t next.js-saas-admin-starter:latest \
   --build-arg NEXT_PUBLIC_APP_URL=https://console.example.com --push .
 ```
 

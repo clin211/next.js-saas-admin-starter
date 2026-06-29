@@ -8,7 +8,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ---
 
-# gc-Console 协作指南
+# next.js-saas-admin-starter 协作指南
 
 > 本文件是面向所有 AI 编码代理（含 Cursor、Aider、Continue 等）的规范说明，也是本仓库的**单一事实源**。`CLAUDE.md` 通过 `@AGENTS.md` 引入本文件，请勿在两处重复维护内容——改动统一在此进行。
 >
@@ -16,7 +16,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## 项目概述
 
-`gc-Console` 是一套 **B 端 SaaS 管理后台的前端基建**（非一次性 demo），目标是建立「设计体系 + 工程骨架 + 业务能力底座」，使后续业务模块能按约定快速组装。权威设计文档是 `docs/technical-solution.md`（约 57KB，代码注释中频繁出现的 `§4.4`、`§7.1` 等章节号即指向该文档）。
+`next.js-saas-admin-starter` 是一套 **B 端 SaaS 管理后台的前端基建**（非一次性 demo），目标是建立「设计体系 + 工程骨架 + 业务能力底座」，使后续业务模块能按约定快速组装。权威设计文档是 `docs/technical-solution.md`（约 57KB，代码注释中频繁出现的 `§4.4`、`§7.1` 等章节号即指向该文档）。
 
 当前处于 **脚手架/基座阶段**：设计令牌、应用骨架、请求层、权限闸、TanStack Query 已就位；但存在大量桩（stub）与 TODO——例如 `currentRole` 写死为 `Console`、`proxy.ts` 中租户解析待实现、`features/projects` 是唯一业务模块模板。图表（Recharts/ECharts）、拖拽（dnd-kit）、i18n、富文本、测试框架**尚未引入**（文档有规划但未落地）。
 

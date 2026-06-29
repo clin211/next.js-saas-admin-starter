@@ -1,17 +1,17 @@
 # syntax=docker/dockerfile:1.7
 # =============================================================================
-# gc-Console 生产镜像 —— Next.js standalone 输出（自含最小 node_modules）
+# next.js-saas-admin-starter 生产镜像 —— Next.js standalone 输出（自含最小 node_modules）
 #
 # 多阶段：bun 装依赖 + 编译 → node:22-alpine 运行 standalone server。
 # 最终镜像仅含运行所需产物、以非 root 用户运行。
 #
 # 构建（上下文须为仓库根）：
-#   docker build -f deploy/Dockerfile -t gc-console:latest \
+#   docker build -f deploy/Dockerfile -t next.js-saas-admin-starter:latest \
 #     --build-arg NEXT_PUBLIC_APP_URL=https://console.example.com .
 #     # 接真实后端再加：--build-arg NEXT_PUBLIC_API_BASE_URL=https://api.example.com
 #
 # 运行（AUTH_SECRET 为运行期必填）：
-#   docker run -p 3000:3000 -e AUTH_SECRET=$(openssl rand -base64 32) gc-console:latest
+#   docker run -p 3000:3000 -e AUTH_SECRET=$(openssl rand -base64 32) next.js-saas-admin-starter:latest
 #
 # 详见 deploy/README.md。
 # =============================================================================

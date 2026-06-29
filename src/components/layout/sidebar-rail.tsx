@@ -20,7 +20,7 @@ export function SidebarRail() {
       style={{ width: "var(--shell-rail)" }}
       className="hidden shrink-0 grow-0 flex-col bg-rail md:flex"
     >
-      {/* 顶部：品牌 Logo（渐变标，与 Panel 头「创作系统」两行同高） */}
+      {/* 顶部：品牌 Logo（渐变标，与 Panel 头「管理控制台」两行同高） */}
       <div
         className="flex shrink-0 items-center justify-center"
         style={{ height: "var(--shell-header)" }}
@@ -30,7 +30,7 @@ export function SidebarRail() {
           className="flex size-11 items-center justify-center rounded-2xl text-sm font-bold text-white shadow-sm"
           style={{ backgroundImage: "linear-gradient(135deg, var(--brand-from), var(--brand-to))" }}
         >
-          GC
+          SA
         </span>
       </div>
 

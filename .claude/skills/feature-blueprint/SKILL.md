@@ -1,15 +1,15 @@
 ---
 name: feature-blueprint
-description: gc-Console 项目里新建功能模块、页面、组件或路由时的工程规范与脚手架指南。覆盖 RSC vs 'use client' 的边界、SSR/CSR/SSG/ISR 怎么选、features/<x> 模块怎么搭、组件如何按「职责单一 / 职责分离 / 逻辑与 UI 分离」拆分、每个路由段必须配 loading/error/not-found 三件套、图示如何用 undraw 并贴合亮暗主题。当用户提到「新增 / 实现 / 做一个功能 / 模块 / 页面 / 组件」「加一个 CRUD」「做一个表格 / 表单 / 详情页」「新建 xxx 管理」「在仪表盘加卡片 / 统计」「做一个公开落地页 / 定价页」，或要求「按规范来」「符合最佳实践」「用 SSR/SSG/ISR 优化」时，都应使用这个 skill。即使用户没明说「按规范」，只要是在 gc-Console 里写新代码，也应优先参考它，以保证模块结构、渲染边界、路由三件套与设计令牌的一致性。
+description: next.js-saas-admin-starter 项目里新建功能模块、页面、组件或路由时的工程规范与脚手架指南。覆盖 RSC vs 'use client' 的边界、SSR/CSR/SSG/ISR 怎么选、features/<x> 模块怎么搭、组件如何按「职责单一 / 职责分离 / 逻辑与 UI 分离」拆分、每个路由段必须配 loading/error/not-found 三件套、图示如何用 undraw 并贴合亮暗主题。当用户提到「新增 / 实现 / 做一个功能 / 模块 / 页面 / 组件」「加一个 CRUD」「做一个表格 / 表单 / 详情页」「新建 xxx 管理」「在仪表盘加卡片 / 统计」「做一个公开落地页 / 定价页」，或要求「按规范来」「符合最佳实践」「用 SSR/SSG/ISR 优化」时，都应使用这个 skill。即使用户没明说「按规范」，只要是在 next.js-saas-admin-starter 里写新代码，也应优先参考它，以保证模块结构、渲染边界、路由三件套与设计令牌的一致性。
 ---
 
-# feature-blueprint — gc-Console 新功能 / 组件建造指南
+# feature-blueprint — next.js-saas-admin-starter 新功能 / 组件建造指南
 
-> 你现在在 gc-Console（Next.js 16 App Router 的 B 端 SaaS 管理后台基座）里写**新代码**。这个 skill 不是科普 Next.js，而是告诉你：**怎么顺着项目已有的约定往下长**，让新东西在性能、稳定性、一致性三方面都站得住。
+> 你现在在 next.js-saas-admin-starter（Next.js 16 App Router 的 B 端 SaaS 管理后台基座）里写**新代码**。这个 skill 不是科普 Next.js，而是告诉你：**怎么顺着项目已有的约定往下长**，让新东西在性能、稳定性、一致性三方面都站得住。
 
 ## 这个 skill 解决什么
 
-gc-Console 已经沉淀了一套约定（`features/` 特性模块、RSC-first、Zod 单一事实源、语义令牌、TanStack Query + `<HydrateBoundary>`、`<Can>` 权限闸、URL 即状态）。新功能要**接着这套约定生长**，而不是各写各的。本 skill 给你三样东西：
+next.js-saas-admin-starter 已经沉淀了一套约定（`features/` 特性模块、RSC-first、Zod 单一事实源、语义令牌、TanStack Query + `<HydrateBoundary>`、`<Can>` 权限闸、URL 即状态）。新功能要**接着这套约定生长**，而不是各写各的。本 skill 给你三样东西：
 
 1. **决策框架** —— 遇到分叉（该用 Server 还是 Client？SSR 还是 SSG？这块逻辑放哪？）时怎么判断；
 2. **不变量** —— 无条件遵守、违反就埋雷的少数几条；
@@ -128,7 +128,7 @@ node .claude/skills/feature-blueprint/scripts/scaffold-route.mjs "src/app/(dashb
 
 1. **一键拉取 + 着色 + 出组件**（推荐）：
    ```bash
-   # 别名（gc-Console 常用场景预设）：error-404 / error-401 / error-403 / error-500 / error-503 / empty
+   # 别名（next.js-saas-admin-starter 常用场景预设）：error-404 / error-401 / error-403 / error-500 / error-503 / empty
    node .claude/skills/feature-blueprint/scripts/fetch-undraw.mjs error-404 \
      --component src/components/illustrations/error-404.tsx --out public/illustrations/error-404.svg
    # 关键词拉取：node ...fetch-undraw.mjs lost   浏览镜像：node ...fetch-undraw.mjs --list server

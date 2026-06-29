@@ -19,7 +19,7 @@ type SidebarPanelProps = {
 
 /**
  * 当前 Rail 项下的多级页面树（白色 Panel）。
- * 头部：固定标题「创作系统」+ 品牌副标（大写）+ 分割线，与 Rail Logo / Topbar 同高；
+ * 头部：固定标题「管理控制台」+ 品牌副标（大写）+ 分割线，与 Rail Logo / Topbar 同高；
  * 列表：递归 NavTree，激活态用柔和底色（不抢主题色的眼），层级弱于 Rail。收起=完全收起（宽 0）。§4.4
  */
 export function SidebarPanel({ collapsed, width }: SidebarPanelProps) {
@@ -56,7 +56,7 @@ export function SidebarPanel({ collapsed, width }: SidebarPanelProps) {
         className="flex shrink-0 flex-col justify-center px-4"
         style={{ height: "var(--shell-header)" }}
       >
-        <p className="text-body font-semibold text-sidebar-foreground">创作系统</p>
+        <p className="text-body font-semibold text-sidebar-foreground">管理控制台</p>
         <p className="mt-0.5 text-overline tracking-wider text-muted-foreground">
           {siteConfig.name.toUpperCase()}
         </p>

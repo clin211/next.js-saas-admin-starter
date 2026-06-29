@@ -13,7 +13,7 @@
 //   node fetch-undraw.mjs --list <keyword>
 //
 // <query> 解析顺序：
-//   1) 别名（gc-Console 常用预设，见 ALIASES）：error-404 / error-401 / error-403 / error-500 / error-503 / empty
+//   1) 别名（next.js-saas-admin-starter 常用预设，见 ALIASES）：error-404 / error-401 / error-403 / error-500 / error-503 / empty
 //   2) 精确名（可带 mirror: 前缀，可省 .svg）：balazser:fingerprint-login / lost_bqr2
 //   3) 关键词：在两个镜像里子串（不区分大小写）匹配；命中多个则列出，用 --exact mirror:file 挑一个
 //
@@ -57,10 +57,10 @@ const treeCache = (id) => resolve(tmpdir(), `undraw-tree-${id}.json`);
 const CACHE_MS = 1000 * 60 * 60 * 6; // 6 小时缓存镜像目录，避免反复拉取 + 触发限流
 const GH_HEADERS = {
   Accept: "application/vnd.github+json",
-  "User-Agent": "gc-console-fetch-undraw",
+  "User-Agent": "next.js-saas-admin-starter-fetch-undraw",
 };
 
-// gc-Console 常用场景 → "mirror:file"。401 用 balazser 的 fingerprint-login（认证语义最准）。
+// next.js-saas-admin-starter 常用场景 → "mirror:file"。401 用 balazser 的 fingerprint-login（认证语义最准）。
 const ALIASES = {
   "error-404": "cuuupid:lost_bqr2",
   "error-401": "balazser:fingerprint-login",

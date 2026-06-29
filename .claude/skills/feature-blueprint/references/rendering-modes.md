@@ -1,6 +1,6 @@
 # 渲染模式决策指南（SSR / CSR / SSG / ISR）
 
-> gc-Console 落地版。配合 `SKILL.md` 第 1 步使用。核心心法：**默认 RSC（SSR 动态），把交互压成小岛（CSR），公开稳定页静态化（SSG/ISR）。**
+> next.js-saas-admin-starter 落地版。配合 `SKILL.md` 第 1 步使用。核心心法：**默认 RSC（SSR 动态），把交互压成小岛（CSR），公开稳定页静态化（SSG/ISR）。**
 
 ## 目录
 - [一张图选模式](#一张图选模式)
